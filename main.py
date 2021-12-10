@@ -132,9 +132,9 @@ box_list.append(key_cutter_box)
 #10:ペンチ
 pliers_box = Box((4, 7), ["ペンチ"], 0)
 box_list.append(pliers_box)
-#11:200円
-coin_200_box = Box((22, 13), ["200円"], 0)
-box_list.append(coin_200_box)
+#11:1000円
+coin_1000_box = Box((22, 13), ["1000円"], 0)
+box_list.append(coin_1000_box)
 #12:4桁パスワード
 passward_4_box = Box((10, 20), [f"4桁のパスワード({pas_4_rand})"], "ライター")#(19, 14)
 box_list.append(passward_4_box)
@@ -145,13 +145,13 @@ box_list.append(projector_box)
 left_memo = Box((8, 14), ["メモの左端"], 0)
 box_list.append(left_memo)
 #15:学生証
-StudenCard_jihan = Box((20, 22), ["学生証", "100円"], "200円")
+StudenCard_jihan = Box((20, 22), ["学生証", "500円"], "1000円")
 box_list.append(StudenCard_jihan)
 #16:ライター
 righter_box = Box((14, 21), ["からのライター"], 0)
 box_list.append(righter_box)
 #17:ライターオイル
-righter_oil_box = Box((19, 14), ["ライターオイル"], "100円")#(10, 20)
+righter_oil_box = Box((19, 14), ["ライターオイル"], "500円")#(10, 20)
 box_list.append(righter_oil_box)
 #18:電源コード
 code_box =Box((1, 20), ["電源コード"], 0)
@@ -365,10 +365,10 @@ def check_game_clear(player_x, player_y):
 def change_player(play_player):
     if play_player == player_x:
         print("change to Y")
-        return player_y
+        return player_y, "Y君に切り替えた"
     else:
         print("change to X")
-        return player_x
+        return player_x, "X君に切り替えた"
 
 #ルールの表示
 def print_rule():
@@ -395,7 +395,6 @@ def print_rule():
 
 #壁と箱の衝突判定
 def check_cpllide(map, x, y):
-    # print(map[x][y])
     if map[x][y] == "1" or map[x][y] == "3" or map[x][y] == "5":
         print("これ以上進めない")
         return True
@@ -477,7 +476,7 @@ def action(map, play_player, goal_open):
                     return f"{Color.YELLOW}＊ガムテープでグルグル巻きになっている{Color.RESET}"
                 if find_obj == StudenCard_jihan:
                     #print("＊100円で僕の学生証が売ってる！！")
-                    return f"{Color.YELLOW}＊100円で僕の学生証が売ってる！！{Color.RESET}"
+                    return f"{Color.YELLOW}＊500円で僕の学生証が売ってる！！{Color.RESET}"
                 if find_obj == passward_4_box:
                     #print("＊掲示板に何も書かれてない紙が貼ってある")
                     return f"{Color.YELLOW}＊掲示板に何も書かれてない紙が貼ってある{Color.RESET}"
@@ -513,23 +512,23 @@ def action(map, play_player, goal_open):
                         for player in player_list:
                             player.item_have += [get_item]
                         play_player.item_have.remove(find_obj.item_info)
-                        return f"{Color.YELLOW}紙をあぶったら数字が浮き出た\n{get_item}を手に入れた{Color.RESET}"
+                        return f"＊{Color.YELLOW}紙をあぶったら数字が浮き出た\n{get_item}を手に入れた{Color.RESET}"
 
                     if find_obj == projector_box:
                         for player in player_list:
                             player.item_have += [get_item]
                         play_player.item_have.remove(find_obj.item_info)
-                        return f"{Color.YELLOW}プロジェクタから数字が映し出された\n{get_item}を手に入れた{Color.RESET}"
+                        return f"＊{Color.YELLOW}プロジェクタから数字が映し出された\n{get_item}を手に入れた{Color.RESET}"
 
                     if find_obj == passward_6_box:
                         for player in player_list:
                             player.item_have += [get_item]
                         play_player.item_have.remove(find_obj.item_info)
-                        return f"{Color.YELLOW}{get_item}を手に入れた{Color.RESET}"
+                        return f"＊{Color.YELLOW}{get_item}を手に入れた{Color.RESET}"
                 
                 elif find_obj == key_cutter_box:
                     try:
-                        pas_4 = int(input(f"{Color.MAGENTA}パスワードを入力してください：{Color.RESET}"))
+                        pas_4 = int(input(f"{Color.MAGENTA}＊パスワードを入力してください：{Color.RESET}"))
                         if pas_4 == pas_4_rand:
                             play_player.item_have += find_obj.item
                             #print(f"{get_item}を手に入れた")
@@ -548,13 +547,13 @@ def action(map, play_player, goal_open):
                         if "からのライター" in play_player.item_have:
                             play_player.item_have += ["ライター"]
                             play_player.item_have.remove("からのライター")
-                            play_player.item_have.remove("100円")
+                            play_player.item_have.remove("500円")
                             find_obj.empty = 1
-                            return f"{Color.YELLOW}ードライバーの代わりに100円玉を使った{Color.RESET}\n"+f"{Color.YELLOW}{get_item}を手に入れた{Color.RESET}\n"+f"{Color.YELLOW}からのライターにオイルを入れた{Color.RESET}"
+                            return f"{Color.YELLOW}ードライバーの代わりに500円玉を使った{Color.RESET}\n"+f"{Color.YELLOW}{get_item}を手に入れた{Color.RESET}\n"+f"{Color.YELLOW}からのライターにオイルを入れた{Color.RESET}"
                         play_player.item_have += find_obj.item
                         find_obj.empty = 1
                         play_player.item_have.remove(find_obj.item_info)
-                        return f"{Color.YELLOW}ードライバーの代わりに100円玉を使った{Color.RESET}\n"+f"{Color.YELLOW}{get_item}を手に入れた{Color.RESET}"
+                        return f"{Color.YELLOW}ードライバーの代わりに500円玉を使った{Color.RESET}\n"+f"{Color.YELLOW}{get_item}を手に入れた{Color.RESET}"
 
                     elif (find_obj == battery_box and "電池のないランプ" in play_player.item_have):
                         play_player.item_have += ["ランプ"]
@@ -664,9 +663,9 @@ def action(map, play_player, goal_open):
         if find_obj == 1:
             pas_8 = int(input(f"{Color.MAGENTA}パスワードを入力してください：{Color.RESET}"))
             if pas_8 == pas_8_rand:
-                for player in player_list:
-                    player.item_have.remove("メモの左端")
-                    player.item_have.remove("メモの右端")
+                #for player in player_list:
+                #    player.item_have.remove("メモの左端")
+                #    player.item_have.remove("メモの右端")
                 return 1
             else:
                 return f"{Color.RED}パスワードが間違っています{Color.RESET}"
@@ -728,7 +727,7 @@ while game_state == 0:
             goal_open = 1
             print_txt == "扉が開いた"
     elif do == "c":
-        play_player = change_player(play_player)
+        play_player, print_txt = change_player(play_player)
     elif do == "r":
         print_rule()
     else:
