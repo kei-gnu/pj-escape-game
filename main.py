@@ -364,10 +364,8 @@ def check_game_clear(player_x, player_y):
 #プレイヤーの切り替え
 def change_player(play_player):
     if play_player == player_x:
-        print("change to Y")
         return player_y, "Y君に切り替えた"
     else:
-        print("change to X")
         return player_x, "X君に切り替えた"
 
 #ルールの表示
@@ -381,6 +379,7 @@ def print_rule():
     print("・X君とY君は一人ずつしか操作できないんだ...X君とY君を切り替えながら進もう！")
     print("・対応するスイッチを踏んでいる間だけドアが開くよ")
     print("・対応するドアとスイッチは同じ色になっているよ")
+    print("・アイテムが必要なドアは白色だよ")
     print("・アイテムは一回使ったらなくなっちゃうよ")
     print("・X君とY君は電話を持っているから情報は共有出来るよ.でもアイテムは共有出来ないよ")
     print("・爆発までの制限時間は900秒だ！")
@@ -414,18 +413,23 @@ def move_player(map, direction, play_player):
         move_player.y += -1
         if check_cpllide(map, move_player.x, move_player.y):
             move_player.y += 1
+            return "これ以上進めない"
     elif direction == "w":
         move_player.x += -1
         if check_cpllide(map, move_player.x, move_player.y):
             move_player.x += 1
+            return "これ以上進めない"
     elif direction == "s":
         move_player.x += 1
         if check_cpllide(map, move_player.x, move_player.y):
             move_player.x += -1
+            return "これ以上進めない"
     elif direction == "d":
         move_player.y += 1
         if check_cpllide(map, move_player.x, move_player.y):
             move_player.y += -1
+            return "これ以上進めない"
+    return ""
 
 #ドアを開け閉め
 def check_door(open_num):
@@ -731,7 +735,7 @@ while game_state == 0:
     elif do == "r":
         print_rule()
     else:
-        move_player(map_info, do, play_player)
+        print_txt = move_player(map_info, do, play_player)
         open_door_list = [check_switch(player_x), check_switch(player_y)]
         open_num = check_door(open_door_list)
     map_info = print_out(map_info)
@@ -745,3 +749,4 @@ while game_state == 0:
     game_state = check_game_clear(player_x, player_y)
     if game_state == 2:
         print("game clear!!!!!!")
+        break
