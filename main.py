@@ -737,7 +737,7 @@ while game_state == 0:
         open_num = check_door(open_door_list)
     map_info = print_out(map_info)
     if len(open_num) == 2:
-        print(f"＊{open_num[0]}と{open_num[1]}のドアが開いてい
+        print(f"＊{open_num[0]}と{open_num[1]}のドアが開いている")
     if len(open_num) == 1:
         print(f"＊{open_num[0]}のドアが開いている")
     if print_txt != "":
