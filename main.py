@@ -395,7 +395,7 @@ def print_rule():
 
 #壁と箱の衝突判定
 def check_cpllide(map, x, y):
-    print(map[x][y])
+    # print(map[x][y])
     if map[x][y] == "1" or map[x][y] == "3" or map[x][y] == "5":
         print("これ以上進めない")
         return True
